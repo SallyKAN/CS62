@@ -3,7 +3,6 @@ DIRECTORY="/home/snape/Downloads/Google_home"
 
 #echo "cd $DIRECTORY"
 cd $DIRECTORY
-command=
 for data_set in $(ls ./);
 do
 	echo "calculating $data_set..."
