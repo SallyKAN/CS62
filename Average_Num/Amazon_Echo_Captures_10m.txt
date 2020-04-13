@@ -1,0 +1,6 @@
+alarm=111
+fact=120
+joke=97
+time=107
+timer=134
+weather=130
