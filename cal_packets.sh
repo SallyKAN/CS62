@@ -1,7 +1,9 @@
 #!/bin/bash
-DIRECTORY="/home/snape/Downloads/Google_home"
+DIRECTORY=$1
+OUT_DIR=$2
 
-#echo "cd $DIRECTORY"
+echo "cd $DIRECTORY"
+
 cd $DIRECTORY
 for data_set in $(ls ./);
 do
@@ -16,9 +18,13 @@ do
 	mergecap -w all.pcap *.pcap
 	packets=`capinfos all.pcap|grep -e "Number of packets ="|awk '{print $5}'`
 	echo "The total packets number: $packets"
-	RESULT=$(echo "$packets/$number" | bc -l)
+	RESULT=$(echo "$packets/$number"|bc)
 	echo "$data_set average is $RESULT"
 	echo " "
-	cd - >/dev/null 
+	rm all.pcap
+	cd - >/dev/null
+	average=$(basename $(dirname $DIRECTORY))"_"$(basename $DIRECTORY)
+	#echo $average
+	echo "$data_set=$RESULT" >> $OUT_DIR/$average.txt
 done
 
