@@ -8,7 +8,11 @@ import pickle
 
 
 def write_pickle(filepath, outdir, average):
-    filename = os.path.splitext(os.path.basename(filepath))[0]
+    file = os.path.basename(filepath)
+    if not file.endswith(".pcap"):
+        return
+    filename = os.path.splitext(file)[0]
+    print("process " + file)
     packets = rdpcap(filepath)
     outfilename = filename + ".pkl"
     outfile = open(os.path.join(outdir, outfilename), 'wb')
@@ -72,7 +76,7 @@ def make_directory(dirpath):
 if __name__ == '__main__':
     data_dir = "/home/snape/Documents/comp5703/data"
     pickle_dir = "/home/snape/Documents/comp5703/data/pickle_data"
-    dir_list = ["Amazon_Echo"]
+    dir_list = ["Google_Home"]
     distance_dir_list = ["Captures_10m", "Captures_5m"]
     average_dir = "./Average_Num"
     # dir_list.append(subdir)
@@ -91,8 +95,8 @@ if __name__ == '__main__':
                     print("creating " + out_dir)
                     make_directory(out_dir)
                     print("writing to " + out_dir)
+                    average = average_dict[dir][command]
+                    print(command + " average number is: " + average)
                     for file in os.listdir(command_path):
                         filepath = os.path.join(command_path, file)
-                        average = average_dict[dir][command]
-                        # print(command + " average number is: " + average)
                         write_pickle(filepath, out_dir, average)
