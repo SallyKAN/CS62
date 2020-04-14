@@ -2,7 +2,6 @@
 # Created: 20-4-8
 import shutil
 from pathlib import Path
-import os
 from scapy.all import *
 import pickle
 
@@ -73,24 +72,57 @@ def make_directory(dirpath):
     p.mkdir(exist_ok=True, parents=True)
 
 
+"""
+The data under `data_dir` is structured as below:
+
+├── Amazon_Echo
+│   └── Captures_10m
+│       ├── alarm
+│       ├── fact
+│       ├── joke
+│       ├── time
+│       ├── timer
+│       └── weather
+├── Google_Home
+│   └── Captures_5m
+│       ├── alarm
+│       ├── fact
+│       ├── joke
+│       ├── music_play
+│       ├── music_stop
+│       ├── smart_bulb
+│       ├── smart_plug
+│       ├── time
+│       ├── timer
+│       └── weather
+
+"""
+
 if __name__ == '__main__':
     data_dir = "/home/snape/Documents/comp5703/data"
     pickle_dir = "/home/snape/Documents/comp5703/data/pickle_data"
     dir_list = ["Google_Home"]
     distance_dir_list = ["Captures_10m", "Captures_5m"]
     average_dir = "./Average_Num"
-    # dir_list.append(subdir)
     average_dict = {}
+
+    # Iterate through the data directory by smart speaker type: Google_Home, Amazon_Echo
     for dir in dir_list:
+
+        # Iterate through the distance subdirectory of each data directory: Captures_10m, Captures_5m
         for distance_dir in distance_dir_list:
             current_path = os.path.join(data_dir, dir, distance_dir)
             if os.path.isdir(current_path):
                 print("Current path: " + current_path)
-                # current_path = os.path.join(data_dir, dir)
+
+                # for each subdirectory,
+                # get the average packet size from pre-calculated results put under `./Average_Num` directory
                 average_dict[dir] = get_average(dir)
                 print(average_dict[dir])
+
                 for command in os.listdir(current_path):
                     command_path = os.path.join(current_path, command)
+                    # Create the output direcory of generated pickle files
                     out_dir = os.path.join(pickle_dir, dir, distance_dir, command)
                     print("creating " + out_dir)
                     make_directory(out_dir)
@@ -99,4 +131,6 @@ if __name__ == '__main__':
                     print(command + " average number is: " + average)
                     for file in os.listdir(command_path):
                         filepath = os.path.join(command_path, file)
+                        # For each file under command subdirectory
+                        # process packets and write as pickle file when the packet number is not greater than the average number
                         write_pickle(filepath, out_dir, average)
