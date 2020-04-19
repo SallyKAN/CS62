@@ -6,29 +6,29 @@ from scapy.all import *
 import pickle
 
 
-def write_pickle(filepath, outdir, average):
+def transform_data(pkt_instance, filepath, average):
     file = os.path.basename(filepath)
     if not file.endswith(".pcap"):
         return
-    filename = os.path.splitext(file)[0]
+    # filename = os.path.splitext(file)[0]
     print("process " + file)
     packets = rdpcap(filepath)
-    outfilename = filename + ".pkl"
-    outfile = open(os.path.join(outdir, outfilename), 'wb')
-    pkt_data = []
     num = 0
     flag = 0
+    size = 0
     for p in packets:
+        pkt_row = []
         if num > int(average):
             break
         # count the number of packets
         num = num + 1
         # To store the packet info
-        pkt_dict = {}
+        # pkt_instance = []
         # Source MAC address
-        src = p.addr2
+        # src = p.addr2
         # Destination MAC address
-        des = p.addr1
+        # des = p.addr1
+
         # Packet size
         size = len(p)
         # Polarity flag derived from the QS status, 'to-DS' indicates STA to AP, 'from-DS' indicates AP to STA
@@ -39,19 +39,20 @@ def write_pickle(filepath, outdir, average):
         # print("packet size: " + str(size))
         # print("Polarity: " + str(DS))
 
-        pkt_dict['No'] = num
-        pkt_dict['src'] = src
-        pkt_dict['des'] = des
-        pkt_dict['size'] = size
+        # pkt_dict['No'] = num
+        # pkt_dict['src'] = src
+        # pkt_dict['des'] = des
+        # pkt_dict['size'] = size
         if str(DS) == 'to-DS':
             flag = -1
         else:
             flag = +1
-        pkt_dict['polarity'] = flag
-
-        pkt_data.append(pkt_dict)
-
-    pickle.dump(pkt_data, outfile)
+        pkt_row.append(flag)
+        pkt_row.append(size)
+        pkt_instance.append(pkt_row)
+    if num < int(average):
+        for i in range(int(average) - num):
+            pkt_instance.append([flag, size])
 
 
 def get_average(dirname):
@@ -76,10 +77,21 @@ def make_directory(dirpath):
 The data under `data_dir` is structured as below:
 
 ├── Amazon_Echo
-│   └── Captures_10m
+│   ├── Captures_10m
+│   │   ├── alarm
+│   │   ├── fact
+│   │   ├── joke
+│   │   ├── smart_bulb
+│   │   ├── smart_plug
+│   │   ├── time
+│   │   ├── timer
+│   │   └── weather
+│   └── Captures_5m
 │       ├── alarm
 │       ├── fact
 │       ├── joke
+│       ├── smart_bulb
+│       ├── smart_plug
 │       ├── time
 │       ├── timer
 │       └── weather
@@ -101,14 +113,13 @@ The data under `data_dir` is structured as below:
 if __name__ == '__main__':
     data_dir = "/home/snape/Documents/comp5703/data"
     pickle_dir = "/home/snape/Documents/comp5703/data/pickle_data"
-    dir_list = ["Google_Home"]
+    dir_list = ["Amazon_Echo", "Google_Home"]
     distance_dir_list = ["Captures_10m", "Captures_5m"]
     average_dir = "./Average_Num"
     average_dict = {}
 
     # Iterate through the data directory by smart speaker type: Google_Home, Amazon_Echo
     for dir in dir_list:
-
         # Iterate through the distance subdirectory of each data directory: Captures_10m, Captures_5m
         for distance_dir in distance_dir_list:
             current_path = os.path.join(data_dir, dir, distance_dir)
@@ -129,8 +140,13 @@ if __name__ == '__main__':
                     print("writing to " + out_dir)
                     average = average_dict[dir][command]
                     print(command + " average number is: " + average)
+                    pkt_data = []
                     for file in os.listdir(command_path):
                         filepath = os.path.join(command_path, file)
                         # For each file under command subdirectory
                         # process packets and write as pickle file when the packet number is not greater than the average number
-                        write_pickle(filepath, out_dir, average)
+                        transform_data(pkt_data, filepath, average)
+
+                    outfilename = command + ".pkl"
+                    outfile = open(os.path.join(out_dir, outfilename), 'wb')
+                    pickle.dump(pkt_data, outfile)
