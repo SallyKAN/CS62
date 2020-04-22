@@ -1,8 +1,0 @@
-alarm=111
-fact=120
-joke=97
-smart_bulb=95
-smart_plug=67
-time=107
-timer=134
-weather=130
