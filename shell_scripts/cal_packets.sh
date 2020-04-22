@@ -2,9 +2,7 @@
 DIRECTORY=$1
 OUT_DIR=$2
 
-echo "cd $DIRECTORY"
-
-cd $DIRECTORY
+cal_per_command(){
 for data_set in $(ls ./);
 do
 	echo "calculating $data_set..."
@@ -23,8 +21,28 @@ do
 	echo " "
 	rm all.pcap
 	cd - >/dev/null
-	average=$(basename $(dirname $DIRECTORY))"_"$(basename $DIRECTORY)
+	average=$1"_"$2
 	#echo $average
 	echo "$data_set=$RESULT" >> $OUT_DIR/$average.txt
 done
+}
 
+rm -rf $OUT_DIR/*
+echo "rm -rf $OUT_DIR/*" 
+
+cd $DIRECTORY
+echo "cd $DIRECTORY"
+
+for device_dataset in $(ls ./);
+do
+	cd $device_dataset
+	echo "cd $device_dataset"
+	for distance_dataset in $(ls ./);
+	do
+		cd $distance_dataset
+		echo "cd $distance_dataset"
+		cal_per_command $device_dataset $distance_dataset
+		cd ..
+	done
+	cd $DIRECTORY
+done
