@@ -2,15 +2,17 @@
 # Created: 20-4-8
 import shutil
 from pathlib import Path
+
+import numpy as np
 from scapy.all import *
 import pickle
+from sklearn.model_selection import train_test_split
 
 
 def transform_data(filepath, average):
     file = os.path.basename(filepath)
     if not file.endswith(".pcap"):
         return
-    # filename = os.path.splitext(file)[0]
     print("process " + file)
     packets = rdpcap(filepath)
     num = 0
@@ -18,10 +20,11 @@ def transform_data(filepath, average):
     size = 0
     pkt_row = []
     for p in packets:
+        # count the number of packets
         num = num + 1
         if num > int(average):
             break
-        # count the number of packets
+
         # Packet size
         size = len(p)
         # Polarity flag derived from the QS status, 'to-DS' indicates STA to AP, 'from-DS' indicates AP to STA
@@ -30,7 +33,7 @@ def transform_data(filepath, average):
             flag = -1
         else:
             flag = 1
-        # pkt_row.append(flag * size)
+
         pkt_row.append(flag * size)
     if num < int(average):
         for i in range(int(average) - num):
@@ -38,23 +41,33 @@ def transform_data(filepath, average):
     return pkt_row
 
 
-#
-# def get_average(dirname):
-#     average = {}
-#     for file in os.listdir(average_dir):
-#         if dirname in file:
-#             f = open(os.path.join(average_dir, file), "r")
-#             for line in f:
-#                 (key, val) = line.split("=")
-#                 average[key] = val
-#     return average
-
-
 def make_directory(dirpath):
     if os.path.exists(dirpath) and os.path.isdir(dirpath):
         shutil.rmtree(dirpath)
     p = Path(dirpath)
     p.mkdir(exist_ok=True, parents=True)
+
+
+def create_dataset(data, labels, out_dir):
+    # Randomly shuffle data and labels with corresponding order.
+    idx = np.random.permutation(len(data))
+    X, y = data[idx], labels[idx]
+
+    # Split the dataset into training set and test set in 7:3
+    # TODO: add validation dataset
+    X_training, X_test, y_training, y_test = train_test_split(X, y, test_size=0.3)
+
+    X_training_outfile = open(os.path.join(out_dir, "X_training.pkl"), 'wb')
+    pickle.dump(X_training, X_training_outfile)
+
+    y_training_outfile = open(os.path.join(out_dir, "y_training.pkl"), 'wb')
+    pickle.dump(y_training, y_training_outfile)
+
+    X_test_outfile = open(os.path.join(out_dir, "X_test.pkl"), 'wb')
+    pickle.dump(X_test, X_test_outfile)
+
+    y_test_outfile = open(os.path.join(out_dir, "y_test.pkl"), 'wb')
+    pickle.dump(y_test, y_test_outfile)
 
 
 """
@@ -126,27 +139,24 @@ if __name__ == '__main__':
             average_name = device_dir + "_" + distance_dir
             average = average_dict[average_name]
             print("average number of " + average_name + " is : " + str(average))
-            X_training = []
-            y_training = []
-            # Create the output direcory of generated pickle files
+
+            # Training data
+            data = []
+
+            # Training label
+            labels = []
+
+            # Create the output directory of generated pickle files
             out_dir = os.path.join(pickle_dir, device_dir, distance_dir)
             print("creating " + out_dir)
             make_directory(out_dir)
-            # print("writing to " + out_dir)
+
             for command in os.listdir(current_path):
                 command_path = os.path.join(current_path, command)
-                # average = average_dict[dir][command]
-                # print(command + " average number is: " + average)
                 for file in os.listdir(command_path):
                     filepath = os.path.join(command_path, file)
-                    # For each file under command subdirectory
-                    # process packets and write as pickle file when the packet number is not greater than the average number
                     pkt_row = transform_data(filepath, average)
-                    X_training.append(pkt_row)
-                    y_training.append(label_dict[command])
+                    data.append(pkt_row)
+                    labels.append(label_dict[command])
 
-            X_training_outfile = open(os.path.join(out_dir, "X_training.pkl"), 'wb')
-            pickle.dump(X_training, X_training_outfile)
-
-            y_training_outfile = open(os.path.join(out_dir, "y_training.pkl"), 'wb')
-            pickle.dump(y_training, y_training_outfile)
+            create_dataset(data, labels, out_dir)
