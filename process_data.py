@@ -3,10 +3,8 @@
 import shutil
 from pathlib import Path
 
-import numpy as np
 from scapy.all import *
 import pickle
-from sklearn.model_selection import train_test_split
 
 
 def transform_data(filepath, average):
@@ -110,8 +108,6 @@ if __name__ == '__main__':
     }
 
     for device_dir in os.listdir(data_dir):
-        if device_dir != 'Google_Home':
-            continue
         device_path = os.path.join(data_dir, device_dir)
         for distance_dir in os.listdir(device_path):
             current_path = os.path.join(device_path, distance_dir)
