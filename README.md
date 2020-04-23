@@ -13,6 +13,7 @@ The original traffic traces (in pcap format) can be download from here:
 [link](https://drive.google.com/open?id=1eqSQzm2VUNQwtWhknwd-AzdB4GGxsZ2D)
 
 The processed data for training and testing (in pickle format) can be download from here:
+[link](https://drive.google.com/file/d/1R8ArcEs1Tfqdz4lBKazP0VyzQINaksna/view?usp=sharing)
   
 ### Dataset Structure
 
