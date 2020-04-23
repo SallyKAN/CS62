@@ -57,27 +57,21 @@ The processed data
 pickle_data
 ├── Amazon_Echo
 │   ├── Captures_10m
-│       ├── X_training.pkl
-│       ├── y_training.pkl
-│       ├── X_test.pkl
-│       ├── y_test.pkl
+│       ├── data.pkl
+│       ├── labels.pkl
 │   └── Captures_5m
-│       ├── X_training.pkl
-│       ├── y_training.pkl
-│       ├── X_test.pkl
-│       ├── y_test.pkl
+│       ├── data.pkl
+│       ├── labels.pkl
 ├── Google_Home
 │   └── Captures_5m
-│       ├── X_training.pkl
-│       ├── y_training.pkl
-│       ├── X_test.pkl
-│       ├── y_test.pkl
+│       ├── data.pkl
+│       ├── labels.pkl
 
 ```
 ### Dataset Description
 ```
-X_<type of evaluation>.pkl : Packet's assigned polarity with packet size sequence
-y_<type of evaluation>.pkl : Corresponding activity's classes sequece
+data.pkl : Packet's assigned polarity with packet size sequence
+labels.pkl : Corresponding activity's classes sequece
 ```
 
 ## Running and Reproduce
@@ -92,3 +86,7 @@ data_dir = "/the/path/to/data/"
 pickle_dir = "/the/path/to/data/"
 ```
 4. run `python prceoss_data.py`
+
+## TODO 
+1. Split the dataset into training and test
+2. normalize dataset 
