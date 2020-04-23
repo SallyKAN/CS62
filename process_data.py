@@ -11,9 +11,9 @@ from sklearn.model_selection import train_test_split
 
 def transform_data(filepath, average):
     file = os.path.basename(filepath)
-    if not file.endswith(".pcap"):
-        return
-    print("process " + file)
+    # if not file.endswith(".pcap"):
+    #     print(filepath)
+    #     return [0] * average
     packets = rdpcap(filepath)
     num = 0
     flag = 0
@@ -92,9 +92,9 @@ if __name__ == '__main__':
     pickle_dir = "/home/snape/Documents/comp5703/pickle_data"
 
     average_dict = {
-        'Amazon_Echo_Captures_5m': 101,
-        'Amazon_Echo_Captures_10m': 107,
-        'Google_Home_Captures_5m': 366
+        'Amazon_Echo_Captures_5m': 120,
+        'Amazon_Echo_Captures_10m': 120,
+        'Google_Home_Captures_5m': 600
     }
     label_dict = {
         'alarm': 1,
@@ -110,6 +110,8 @@ if __name__ == '__main__':
     }
 
     for device_dir in os.listdir(data_dir):
+        if device_dir != 'Google_Home':
+            continue
         device_path = os.path.join(data_dir, device_dir)
         for distance_dir in os.listdir(device_path):
             current_path = os.path.join(device_path, distance_dir)
@@ -130,6 +132,7 @@ if __name__ == '__main__':
             make_directory(out_dir)
 
             for command in os.listdir(current_path):
+                print("process " + command + "...")
                 command_path = os.path.join(current_path, command)
                 for file in os.listdir(command_path):
                     filepath = os.path.join(command_path, file)
