@@ -8,15 +8,17 @@ from sklearn.model_selection import train_test_split
 
 
 def create_dataset(out_dir):
+    # Load training data
     data_path = os.path.join(out_dir, "data.pkl")
-    data = np.array(pickle.load(data_path))
+    with open(data_path, 'rb') as handle:
+        data = np.array(pickle.load(handle))
 
     labels_path = os.path.join(out_dir, "labels.pkl")
-    labels = np.array(pickle.load(labels_path))
+    with open(labels_path, 'rb') as handle:
+        labels = np.array(pickle.load(handle))
 
     # Randomly shuffle data and labels with corresponding order.
     idx = np.random.permutation(len(data))
-    data = np.array()
     X, y = data[idx], labels[idx]
 
     # Split the dataset into training set and test set in 7:3
@@ -38,5 +40,11 @@ def create_dataset(out_dir):
 
 
 if __name__ == '__main__':
-    out_dir = "/home/snape/Documents/comp5703/pickle_data/Google_Home/Captures_5m"
-    create_dataset(out_dir)
+    aamazon5_data_dir = "/home/snape/Documents/comp5703/pickle_data/Amazon_Echo/Captures_5m"
+    create_dataset(aamazon5_data_dir)
+
+    amazon10_data_dir = "/home/snape/Documents/comp5703/pickle_data/Amazon_Echo/Captures_10m"
+    create_dataset(amazon10_data_dir)
+
+    google_out_dir = "/home/snape/Documents/comp5703/pickle_data/Google_Home/Captures_5m"
+    create_dataset(google_out_dir)
