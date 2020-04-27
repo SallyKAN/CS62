@@ -58,16 +58,33 @@ The processed data
 pickle_data
 ├── Amazon_Echo
 │   ├── Captures_10m
-│       ├── data.pkl
-│       ├── labels.pkl
+│   │   ├── data.pkl
+│   │   ├── labels.pkl
+│   │   ├── X_test.pkl
+│   │   ├── X_training.pkl
+│   │   ├── X_val.pkl
+│   │   ├── y_test.pkl
+│   │   ├── y_training.pkl
+│   │   └── y_val.pkl
 │   └── Captures_5m
 │       ├── data.pkl
 │       ├── labels.pkl
-├── Google_Home
-│   └── Captures_5m
-│       ├── data.pkl
-│       ├── labels.pkl
-
+│       ├── X_test.pkl
+│       ├── X_training.pkl
+│       ├── X_val.pkl
+│       ├── y_test.pkl
+│       ├── y_training.pkl
+│       └── y_val.pkl
+└── Google_Home
+    └── Captures_5m
+        ├── data.pkl
+        ├── labels.pkl
+        ├── X_test.pkl
+        ├── X_training.pkl
+        ├── X_val.pkl
+        ├── y_test.pkl
+        ├── y_training.pkl
+        └── y_val.pkl
 ```
 ### Dataset Description
 ```
@@ -75,7 +92,8 @@ data.pkl : Packet's assigned polarity with packet size sequence
 labels.pkl : Corresponding activity's classes sequece
 ```
 
-## Running and Reproduce
+## Running
+### Reproduce processed dataset
 1. Download the original data: [link](https://drive.google.com/open?id=1eqSQzm2VUNQwtWhknwd-AzdB4GGxsZ2D)
 2. Unzip the data to somewhere /the/path/to/data/
 3. Change the data path in `process_data.py`
@@ -86,8 +104,72 @@ data_dir = "/the/path/to/data/"
 # Change to your own path where you put the generated pickle data
 pickle_dir = "/the/path/to/data/"
 ```
-4. run `python prceoss_data.py`
+4. Run `python prceoss_data.py`
+5. The dataset should be generated as:
+```
+/the/path/to/pickle_data/
+├── Amazon_Echo
+│   ├── Captures_10m
+│   │   ├── data.pkl
+│   │   ├── labels.pkl
+│   └── Captures_5m
+│       ├── data.pkl
+│       ├── labels.pkl
+└── Google_Home
+    └── Captures_5m
+        ├── data.pkl
+        ├── labels.pkl
+```
+### Split datasets into train, validation test
+1. Change the data path in the `utils.py`
+```
+    aamazon5_data_dir = "/the/path/to/pickle_data/Amazon_Echo/Captures_5m"
+    create_dataset(aamazon5_data_dir)
 
-## TODO 
-1. Split the dataset into training and test
-2. normalize dataset 
+    amazon10_data_dir = "/the/path/to/pickle_data/Amazon_Echo/Captures_10m"
+    create_dataset(amazon10_data_dir)
+
+    google_out_dir = "/the/path/to/pickle_data/Google_Home/Captures_5m"
+    create_dataset(google_out_dir)
+```
+2. Run `python utils.py`
+3. The dataset should be generated as:
+```
+/the/path/to/pickle_data/
+├── Amazon_Echo
+│   ├── Captures_10m
+│   │   ├── data.pkl
+│   │   ├── labels.pkl
+│   │   ├── X_test.pkl
+│   │   ├── X_training.pkl
+│   │   ├── X_val.pkl
+│   │   ├── y_test.pkl
+│   │   ├── y_training.pkl
+│   │   └── y_val.pkl
+│   └── Captures_5m
+│       ├── data.pkl
+│       ├── labels.pkl
+│       ├── X_test.pkl
+│       ├── X_training.pkl
+│       ├── X_val.pkl
+│       ├── y_test.pkl
+│       ├── y_training.pkl
+│       └── y_val.pkl
+└── Google_Home
+    └── Captures_5m
+        ├── data.pkl
+        ├── labels.pkl
+        ├── X_test.pkl
+        ├── X_training.pkl
+        ├── X_val.pkl
+        ├── y_test.pkl
+        ├── y_training.pkl
+        └── y_val.pkl
+```
+### Training 
+1. Change the data path in the `training.py`
+```
+   # Training Google_Home dataset
+   dataset_dir = "/the/path/to/pickle_data/Google_Home/Captures_5m/"
+```
+2. Run `python training.py`
