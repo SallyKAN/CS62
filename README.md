@@ -102,7 +102,7 @@ labels.pkl : Corresponding activity's classes sequece
 # Change to your own path where you put the original data
 data_dir = "/the/path/to/data/"
 # Change to your own path where you put the generated pickle data
-pickle_dir = "/the/path/to/data/"
+pickle_dir = "/the/path/to/pickle_data/"
 ```
 4. Run `python prceoss_data.py`
 5. The dataset should be generated as:
@@ -120,7 +120,7 @@ pickle_dir = "/the/path/to/data/"
         ├── data.pkl
         ├── labels.pkl
 ```
-### Split datasets into train, validation test
+### Split dataset into train, validation, test
 1. Change the data path in the `utils.py`
 ```
     aamazon5_data_dir = "/the/path/to/pickle_data/Amazon_Echo/Captures_5m"
