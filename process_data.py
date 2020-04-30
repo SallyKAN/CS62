@@ -64,6 +64,8 @@ The data under `data_dir` is structured as below:
 │   │   ├── joke
 │   │   ├── smart_bulb
 │   │   ├── smart_plug
+|   |   ├── music_play
+│   |   ├── music_stop
 │   │   ├── time
 │   │   ├── timer
 │   │   └── weather
@@ -103,16 +105,16 @@ if __name__ == '__main__':
         'Google_Home_Captures_5m': 600
     }
     label_dict = {
-        'alarm': 1,
-        'fact': 2,
-        'joke': 3,
-        'smart_bulb': 4,
-        'smart_plug': 5,
-        'time': 6,
-        'timer': 7,
-        'weather': 8,
-        'music_stop': 9,
-        'music_play': 10
+        'alarm': 0,
+        'fact': 1,
+        'joke': 2,
+        'smart_bulb': 3,
+        'smart_plug': 4,
+        'time': 5,
+        'timer': 6,
+        'weather': 7,
+        'music_stop': 8,
+        'music_play': 9
     }
 
     for device_dir in os.listdir(data_dir):
