@@ -1,28 +1,37 @@
 # Author: Sally Kang <snapekang@gmail.com>
 # Created: 20-4-8
 import shutil
+from binascii import crc32
 from pathlib import Path
 
 from scapy.all import *
 import pickle
 
+from scapy.layers.dot11 import Dot11
+
+
+def is_badFCS(p):
+    crc = crc32(bytes(p[Dot11])[:-4]) & 0xFFFFFFFF
+    badFCS = (crc != p.fcs)
+    return badFCS
+
 
 def transform_data(filepath, average):
-    file = os.path.basename(filepath)
-    # if not file.endswith(".pcap"):
-    #     print(filepath)
-    #     return [0] * average
     packets = rdpcap(filepath)
     num = 0
     flag = 0
     size = 0
     pkt_row = []
     for p in packets:
+        if is_badFCS(p):
+            # num = num + 1
+            print("packet " + str(num) + " in " + filepath + ": badFCS")
+            break
+
         # count the number of packets
         num = num + 1
         if num > int(average):
             break
-
         # Packet size
         size = len(p)
         # Polarity flag derived from the QS status, 'to-DS' indicates STA to AP, 'from-DS' indicates AP to STA
@@ -31,7 +40,6 @@ def transform_data(filepath, average):
             flag = -1
         else:
             flag = 1
-
         pkt_row.append(flag * size)
     if num < int(average):
         for i in range(int(average) - num):
@@ -91,7 +99,7 @@ if __name__ == '__main__':
 
     average_dict = {
         'Amazon_Echo_Captures_5m': 120,
-        'Amazon_Echo_Captures_10m': 120,
+        'Amazon_Echo_Captures_10m': 180,
         'Google_Home_Captures_5m': 600
     }
     label_dict = {
