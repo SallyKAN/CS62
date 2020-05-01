@@ -1,8 +1,6 @@
 # Author: Sally Kang <snapekang@gmail.com>
 # Created: 20-4-23
 
-# Load data for Google_Home dataset for training
-import pickle
 import time
 
 import numpy as np
@@ -11,6 +9,7 @@ from keras.utils import np_utils
 
 from utils import load_data
 from Model_def import DFNet
+from sklearn import preprocessing
 
 
 def training(dataset_dir, epoch, batch_size, length, nb_classes):
@@ -30,6 +29,10 @@ def training(dataset_dir, epoch, batch_size, length, nb_classes):
     y_train = y_train.astype('float32')
     y_val = y_val.astype('float32')
     y_test = y_test.astype('float32')
+
+    X_train = preprocessing.normalize(X_train)
+    X_val = preprocessing.normalize(X_val)
+    X_test = preprocessing.normalize(X_test)
 
     # we need a [Length x 1] x n shape as input to the DFNet (Tensorflow)
     X_train = X_train[:, :, np.newaxis]
@@ -75,5 +78,5 @@ def training(dataset_dir, epoch, batch_size, length, nb_classes):
 if __name__ == '__main__':
     # Training Google_Home dataset
     dataset_dir = "/home/snape/Documents/comp5703/pickle_data/Google_Home/Captures_5m/"
-    training(dataset_dir, 20, 64, 600, 11)
+    training(dataset_dir, 30, 64, 600, 10)
 
