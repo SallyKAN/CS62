@@ -11,7 +11,7 @@ from utils import load_data
 from Model_def import DFNet
 from sklearn import preprocessing
 import os
-
+import matplotlib.pyplot as plt
 
 def training(dataset_dir, save_path, epoch, batch_size, length, nb_classes):
     dataset_type = os.path.basename(os.path.dirname(dataset_dir)) + "_" + os.path.basename(dataset_dir)
@@ -75,6 +75,25 @@ def training(dataset_dir, save_path, epoch, batch_size, length, nb_classes):
 
     score_test = model.evaluate(X_test, y_test, verbose=verbose)
     print("Testing accuracy:", score_test[1])
+
+    # list all data in history
+    print(history.history.keys())
+    # summarize history for accuracy
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
+    plt.title('model accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.show()
+    # summarize history for loss
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.show()
 
 
 if __name__ == '__main__':
