@@ -10,13 +10,15 @@ from keras.utils import np_utils
 from utils import load_data
 from Model_def import DFNet
 from sklearn import preprocessing
+import os
 
 
-def training(dataset_dir, epoch, batch_size, length, nb_classes):
-    description = "Training and evaluating DF model for Google_Home dataset"
-    print(description)
+def training(dataset_dir, save_path, epoch, batch_size, length, nb_classes):
+    dataset_type = os.path.basename(os.path.dirname(dataset_dir)) + "_" + os.path.basename(dataset_dir)
+    description = "Training and evaluating DF model for "
+    print(description + dataset_type)
 
-    optimizer = Adamax(learning_rate=0.002, beta_1=0.9, beta_2=0.999)
+    optimizer = Adamax(learning_rate=0.0001, beta_1=0.9, beta_2=0.999)
     input_shape = (length, 1)
     verbose = 1
 
@@ -66,10 +68,10 @@ def training(dataset_dir, epoch, batch_size, length, nb_classes):
                         validation_data=(X_val, y_val))
 
     # Save model
-    # print("Saving Model")
-    # savedpath = "/home/snape/Documents/comp5703/trained_model/Google_Home"
-    # model.save(savedpath)
-    # print("Saving Model Done!", savedpath)
+    print("Saving Model")
+    savedpath = save_path + "/%s.h5" % str(dataset_type)
+    model.save(savedpath)
+    print("Saving Model Done!", savedpath)
 
     score_test = model.evaluate(X_test, y_test, verbose=verbose)
     print("Testing accuracy:", score_test[1])
@@ -77,6 +79,6 @@ def training(dataset_dir, epoch, batch_size, length, nb_classes):
 
 if __name__ == '__main__':
     # Training Google_Home dataset
-    dataset_dir = "/home/snape/Documents/comp5703/pickle_data/Google_Home/Captures_5m/"
-    training(dataset_dir, 30, 64, 600, 10)
-
+    dataset_dir = "/home/snape/Documents/comp5703/pickle_data/Google_Home/Captures_5m"
+    save_path = "/home/snape/Documents/comp5703/trained_models"
+    training(dataset_dir, save_path, 40, 64, 600, 10)
