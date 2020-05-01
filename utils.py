@@ -49,21 +49,21 @@ def load_data(dataset_dir):
     # dataset_dir = '/home/snape/Documents/comp5703/pickle_data/Google_Home/Captures_5m/'
 
     # Load training data
-    with open(dataset_dir + 'X_training.pkl', 'rb') as handle:
+    with open(os.path.join(dataset_dir, 'X_training.pkl'), 'rb') as handle:
         X_train = np.array(pickle.load(handle))
-    with open(dataset_dir + 'y_training.pkl', 'rb') as handle:
+    with open(os.path.join(dataset_dir, 'y_training.pkl'), 'rb') as handle:
         y_train = np.array(pickle.load(handle))
 
     # Load testing data
-    with open(dataset_dir + 'X_test.pkl', 'rb') as handle:
+    with open(os.path.join(dataset_dir, 'X_test.pkl'), 'rb') as handle:
         X_test = np.array(pickle.load(handle))
-    with open(dataset_dir + 'y_test.pkl', 'rb') as handle:
+    with open(os.path.join(dataset_dir, 'y_test.pkl'), 'rb') as handle:
         y_test = np.array(pickle.load(handle))
 
     # Load validation data
-    with open(dataset_dir + 'X_val.pkl', 'rb') as handle:
+    with open(os.path.join(dataset_dir, 'X_val.pkl'), 'rb') as handle:
         X_val = np.array(pickle.load(handle))
-    with open(dataset_dir + 'y_val.pkl', 'rb') as handle:
+    with open(os.path.join(dataset_dir, 'y_val.pkl'), 'rb') as handle:
         y_val = np.array(pickle.load(handle))
 
     print("Data dimensions:")
