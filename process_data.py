@@ -58,28 +58,17 @@ def make_directory(dirpath):
 The data under `data_dir` is structured as below:
 
 ├── Amazon_Echo
-│   ├── Captures_10m
-│   │   ├── alarm
-│   │   ├── fact
-│   │   ├── joke
-│   │   ├── smart_bulb
-│   │   ├── smart_plug
-|   |   ├── music_play
-│   |   ├── music_stop
-│   │   ├── time
-│   │   ├── timer
-│   │   └── weather
-│   └── Captures_5m
 │       ├── alarm
 │       ├── fact
 │       ├── joke
+│       ├── music_play
+│       ├── music_stop
 │       ├── smart_bulb
 │       ├── smart_plug
 │       ├── time
 │       ├── timer
 │       └── weather
 ├── Google_Home
-│   └── Captures_5m
 │       ├── alarm
 │       ├── fact
 │       ├── joke
@@ -95,14 +84,14 @@ The data under `data_dir` is structured as below:
 
 if __name__ == '__main__':
     # Change to your own path where you put the original data
-    data_dir = "/home/snape/Documents/comp5703/data"
+    data_dir = "/home/snape/Documents/comp5703/data/Amazon_Echo/April18"
     # Change to your own path where you put the generated pickle data
     pickle_dir = "/home/snape/Documents/comp5703/pickle_data"
 
+    device_list = ['Amazon_Echo', 'Google_Home']
     average_dict = {
-        'Amazon_Echo_Captures_5m': 120,
-        'Amazon_Echo_Captures_10m': 180,
-        'Google_Home_Captures_5m': 600
+        'Amazon_Echo': 300,
+        'Google_Home': 600
     }
     label_dict = {
         'alarm': 0,
@@ -117,39 +106,40 @@ if __name__ == '__main__':
         'music_play': 9
     }
 
-    for device_dir in os.listdir(data_dir):
-        device_path = os.path.join(data_dir, device_dir)
-        for distance_dir in os.listdir(device_path):
-            current_path = os.path.join(device_path, distance_dir)
-            print("current path: " + current_path)
-            average_name = device_dir + "_" + distance_dir
-            average = average_dict[average_name]
-            print("average number of " + average_name + " is : " + str(average))
+    for device_dir in device_list:
+        if device_dir == 'Google_Home':
+            continue
+        # device_path = os.path.join(data_dir, device_dir)
+        # for distance_dir in os.listdir(device_path):
+        #     current_path = os.path.join(device_path, distance_dir)
+        print("current path: " + data_dir)
+        average_name = device_dir
+        average = average_dict[average_name]
+        print("average number of " + average_name + " is : " + str(average))
 
-            # Training data
-            data = []
+        # Training data
+        data = []
 
-            # Training label
-            labels = []
+        # Training label
+        labels = []
 
-            # Create the output directory of generated pickle files
-            out_dir = os.path.join(pickle_dir, device_dir, distance_dir)
-            print("creating " + out_dir)
-            make_directory(out_dir)
+        # Create the output directory of generated pickle files
+        date = os.path.basename(data_dir)
+        out_dir = os.path.join(pickle_dir, device_dir, date)
+        print("creating " + out_dir)
+        make_directory(out_dir)
 
-            for command in os.listdir(current_path):
-                print("process " + command + "...")
-                command_path = os.path.join(current_path, command)
-                for file in os.listdir(command_path):
-                    filepath = os.path.join(command_path, file)
-                    pkt_row = transform_data(filepath, average)
-                    data.append(pkt_row)
-                    labels.append(label_dict[command])
+        for command in os.listdir(data_dir):
+            print("process " + command + "...")
+            command_path = os.path.join(data_dir, command)
+            for file in os.listdir(command_path):
+                filepath = os.path.join(command_path, file)
+                pkt_row = transform_data(filepath, average)
+                data.append(pkt_row)
+                labels.append(label_dict[command])
 
-            data_outfile = open(os.path.join(out_dir, "data.pkl"), 'wb')
-            pickle.dump(data, data_outfile)
+        data_outfile = open(os.path.join(out_dir, "data.pkl"), 'wb')
+        pickle.dump(data, data_outfile)
 
-            labels_outfile = open(os.path.join(out_dir, "labels.pkl"), 'wb')
-            pickle.dump(labels, labels_outfile)
-
-            # create_dataset(data, labels, out_dir)
+        labels_outfile = open(os.path.join(out_dir, "labels.pkl"), 'wb')
+        pickle.dump(labels, labels_outfile)
