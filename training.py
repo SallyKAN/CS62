@@ -5,6 +5,9 @@ import time
 
 import numpy as np
 from keras.optimizers import Adamax
+from keras.optimizers import Adam
+from keras.optimizers import SGD
+
 from keras.utils import np_utils
 
 from utils import load_data
@@ -13,13 +16,15 @@ from sklearn import preprocessing
 import os
 import matplotlib.pyplot as plt
 
-def training(dataset_dir, save_path, epoch, batch_size, length, nb_classes):
+
+def training(dataset_dir, save_path, lr, epoch, batch_size, input_length, nb_classes):
     dataset_type = os.path.basename(os.path.dirname(dataset_dir)) + "_" + os.path.basename(dataset_dir)
     description = "Training and evaluating DF model for "
     print(description + dataset_type)
 
-    optimizer = Adamax(learning_rate=0.0001, beta_1=0.9, beta_2=0.999)
-    input_shape = (length, 1)
+    optimizer = Adamax(learning_rate=lr, beta_1=0.9, beta_2=0.999)
+    # optimizer = SGD(learning_rate=lr)
+    input_shape = (input_length, 1)
     verbose = 1
 
     X_train, y_train, X_val, y_val, X_test, y_test = load_data(dataset_dir)
@@ -78,26 +83,36 @@ def training(dataset_dir, save_path, epoch, batch_size, length, nb_classes):
 
     # list all data in history
     print(history.history.keys())
-    # summarize history for accuracy
-    plt.plot(history.history['accuracy'])
-    plt.plot(history.history['val_accuracy'])
-    plt.title('model accuracy')
-    plt.ylabel('accuracy')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'test'], loc='upper left')
-    plt.show()
-    # summarize history for loss
-    plt.plot(history.history['loss'])
-    plt.plot(history.history['val_loss'])
-    plt.title('model loss')
-    plt.ylabel('loss')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'test'], loc='upper left')
+    fig_title = "DF Model with " + "lr=" + str(lr) + " batch_size=" + str(batch_size)
+
+    fig, ax1 = plt.subplots()
+    fig.suptitle(fig_title, y=1.05)
+    ax1.set_xlabel('epoch')
+    ax1.set_ylabel('accuracy')
+    l1, = ax1.plot(history.history['accuracy'], color='r', marker=".")
+    l2, = ax1.plot(history.history['val_accuracy'], color='b', marker="v")
+    ax2 = ax1.twinx()
+    ax2.set_ylabel('loss')
+    l3, = ax2.plot(history.history['loss'], color='g', marker="*")
+    l4, = ax2.plot(history.history['val_loss'], color='y', marker="X")
+    plt.legend([l1, l2, l3, l4], ['DF Training Accuracy', 'DF Testing Accuracy', 'DF Training Loss', 'DF Testing Loss'],
+               loc='center right')
+
+    fig.tight_layout()
+    # plt.savefig(fig_title + '.png')
     plt.show()
 
 
 if __name__ == '__main__':
     # Training Google_Home dataset
-    dataset_dir = "/home/snape/Documents/comp5703/pickle_data/Google_Home/Captures_5m"
+    dataset_dir = "/home/snape/Documents/comp5703/pickle_data/Google_Home/April18"
     save_path = "/home/snape/Documents/comp5703/trained_models"
-    training(dataset_dir, save_path, 40, 64, 600, 10)
+    lr = 0.0001
+    epoch = 50
+    batch_size = 32
+    input_length = 600
+    nb_classes = 10
+    # lr_range = [0.0001, 0.001, 0.002, 0.01, 0.02]
+    # batch_size_range = [64, 128, 256]
+    # for lr in lr_range:
+    training(dataset_dir, save_path, lr, epoch, batch_size, input_length, nb_classes)
