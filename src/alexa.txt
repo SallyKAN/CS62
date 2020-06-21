@@ -1,0 +1,8 @@
+alexa, set an alarm at 
+alexa, what is the weather in 
+alexa, tell me a joke
+alexa, play some music
+alexa, set timer for 
+alexa, tell me a fact
+alexa, switch the plug 
+alexa, what time is it in 
