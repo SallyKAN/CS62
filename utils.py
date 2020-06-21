@@ -80,11 +80,13 @@ def load_data(dataset_dir):
 
 
 if __name__ == '__main__':
-    aamazon5_data_dir = "/home/snape/Documents/comp5703/pickle_data/Amazon_Echo/Captures_5m"
-    create_dataset(aamazon5_data_dir)
-
-    amazon10_data_dir = "/home/snape/Documents/comp5703/pickle_data/Amazon_Echo/Captures_10m"
-    create_dataset(amazon10_data_dir)
-
-    google_out_dir = "/home/snape/Documents/comp5703/pickle_data/Google_Home/Captures_5m"
+    # aamazon5_data_dir = "/home/snape/Documents/comp5703/pickle_data/Amazon_Echo/Captures_5m"
+    # create_dataset(aamazon5_data_dir)
+    #
+    # amazon10_data_dir = "/home/snape/Documents/comp5703/pickle_data/Amazon_Echo/Captures_10m"
+    # create_dataset(amazon10_data_dir)
+    #
+    google_out_dir = "/home/snape/Documents/comp5703/pickle_data/Google_Home/May22"
+    # create_dataset(google_out_dir)
+    # amazon_out_dir = "/home/snape/Documents/comp5703/pickle_data/Amazon_Echo/April18"
     create_dataset(google_out_dir)

@@ -84,7 +84,7 @@ The data under `data_dir` is structured as below:
 
 if __name__ == '__main__':
     # Change to your own path where you put the original data
-    data_dir = "/home/snape/Documents/comp5703/data/Amazon_Echo/April18"
+    data_dir = "/home/snape/Documents/comp5703/data/Google_Home/May22"
     # Change to your own path where you put the generated pickle data
     pickle_dir = "/home/snape/Documents/comp5703/pickle_data"
 
@@ -107,7 +107,7 @@ if __name__ == '__main__':
     }
 
     for device_dir in device_list:
-        if device_dir == 'Google_Home':
+        if device_dir == 'Amazon_Echo':
             continue
         # device_path = os.path.join(data_dir, device_dir)
         # for distance_dir in os.listdir(device_path):

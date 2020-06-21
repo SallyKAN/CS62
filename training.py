@@ -33,7 +33,7 @@ def training(dataset_dir, save_path, lr, epoch, batch_size, input_length, nb_cla
     X_train = X_train.astype('float32')
     X_val = X_val.astype('float32')
     X_test = X_test.astype('float32')
-    y_train = y_train.astype('float32')
+    y_train = y_tr6ain.astype('float32')
     y_val = y_val.astype('float32')
     y_test = y_test.astype('float32')
 
@@ -105,12 +105,12 @@ def training(dataset_dir, save_path, lr, epoch, batch_size, input_length, nb_cla
 
 if __name__ == '__main__':
     # Training Google_Home dataset
-    dataset_dir = "/home/snape/Documents/comp5703/pickle_data/Google_Home/April18"
+    dataset_dir = "/home/snape/Documents/comp5703/pickle_data/Amazon_Echo/April18"
     save_path = "/home/snape/Documents/comp5703/trained_models"
     lr = 0.0001
     epoch = 50
     batch_size = 32
-    input_length = 600
+    input_length = 300
     nb_classes = 10
     # lr_range = [0.0001, 0.001, 0.002, 0.01, 0.02]
     # batch_size_range = [64, 128, 256]

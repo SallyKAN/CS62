@@ -23,12 +23,13 @@ do
 	cd - >/dev/null
 	average=$1"_"$2
 	#echo $average
-	echo "$data_set=$RESULT" >> $OUT_DIR/$average.txt
+	#echo "$data_set=$RESULT" >> $OUT_DIR/$average.txt
 done
 }
 
-rm -rf $OUT_DIR/*
-echo "rm -rf $OUT_DIR/*" 
+
+#rm -irf $OUT_DIR/*
+#echo "rm -rf $OUT_DIR/*" 
 
 cd $DIRECTORY
 echo "cd $DIRECTORY"
