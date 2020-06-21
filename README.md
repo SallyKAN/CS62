@@ -10,82 +10,18 @@ Capstone Project
 `pip install requirements.txt`
 ## Dataset
 The original traffic traces (in pcap format) can be download from here:
-[link](https://drive.google.com/open?id=1eqSQzm2VUNQwtWhknwd-AzdB4GGxsZ2D)
+[link](https://drive.google.com/drive/folders/1WnOBsPkqn4Qs1iti39IISlItmThhkjAi?usp=sharing)
 
 The processed data for training and testing (in pickle format) can be download from here:
-[link](https://drive.google.com/file/d/1R8ArcEs1Tfqdz4lBKazP0VyzQINaksna/view?usp=sharing)
+[link](https://drive.google.com/drive/folders/1H4a69SkwU0vtIWDw7FA0Q1nJ_PuI1RCt?usp=sharing)
+
+The trained models can be download from here:
+[link](https://drive.google.com/drive/folders/1zA6HL2E7EzNAoRzXRGwLcxCVn8PjYMo8?usp=sharing)
   
 ### Dataset Structure
 
 The original traffic traces
 
-```
-data
-├── Amazon_Echo
-│   ├── Captures_10m
-│   │   ├── alarm
-│   │   ├── fact
-│   │   ├── joke
-│   │   ├── smart_bulb
-│   │   ├── smart_plug
-│   │   ├── time
-│   │   ├── timer
-│   │   └── weather
-│   └── Captures_5m
-│       ├── alarm
-│       ├── fact
-│       ├── joke
-│       ├── smart_bulb
-│       ├── smart_plug
-│       ├── time
-│       ├── timer
-│       └── weather
-├── Google_Home
-│   └── Captures_5m
-│       ├── alarm
-│       ├── fact
-│       ├── joke
-│       ├── music_play
-│       ├── music_stop
-│       ├── smart_bulb
-│       ├── smart_plug
-│       ├── time
-│       ├── timer
-│       └── weather
-```
-The processed data
-```
-pickle_data
-├── Amazon_Echo
-│   ├── Captures_10m
-│   │   ├── data.pkl
-│   │   ├── labels.pkl
-│   │   ├── X_test.pkl
-│   │   ├── X_training.pkl
-│   │   ├── X_val.pkl
-│   │   ├── y_test.pkl
-│   │   ├── y_training.pkl
-│   │   └── y_val.pkl
-│   └── Captures_5m
-│       ├── data.pkl
-│       ├── labels.pkl
-│       ├── X_test.pkl
-│       ├── X_training.pkl
-│       ├── X_val.pkl
-│       ├── y_test.pkl
-│       ├── y_training.pkl
-│       └── y_val.pkl
-└── Google_Home
-    └── Captures_5m
-        ├── data.pkl
-        ├── labels.pkl
-        ├── X_test.pkl
-        ├── X_training.pkl
-        ├── X_val.pkl
-        ├── y_test.pkl
-        ├── y_training.pkl
-        └── y_val.pkl
-```
 ### Dataset Description
 ```
 data.pkl : Packet's assigned polarity with packet size sequence
@@ -137,39 +73,28 @@ pickle_dir = "/the/path/to/pickle_data/"
 ```
 /the/path/to/pickle_data/
 ├── Amazon_Echo
-│   ├── Captures_10m
-│   │   ├── data.pkl
-│   │   ├── labels.pkl
-│   │   ├── X_test.pkl
-│   │   ├── X_training.pkl
-│   │   ├── X_val.pkl
-│   │   ├── y_test.pkl
-│   │   ├── y_training.pkl
-│   │   └── y_val.pkl
-│   └── Captures_5m
-│       ├── data.pkl
-│       ├── labels.pkl
-│       ├── X_test.pkl
-│       ├── X_training.pkl
-│       ├── X_val.pkl
-│       ├── y_test.pkl
-│       ├── y_training.pkl
-│       └── y_val.pkl
+│   ├── data.pkl
+│   ├── labels.pkl
+│   ├── X_test.pkl
+│   ├── X_training.pkl
+│   ├── X_val.pkl
+│   ├── y_test.pkl
+│   ├── y_training.pkl
+│   └── y_val.pkl
 └── Google_Home
-    └── Captures_5m
-        ├── data.pkl
-        ├── labels.pkl
-        ├── X_test.pkl
-        ├── X_training.pkl
-        ├── X_val.pkl
-        ├── y_test.pkl
-        ├── y_training.pkl
-        └── y_val.pkl
+    ├── data.pkl
+    ├── labels.pkl
+    ├── X_test.pkl
+    ├── X_training.pkl
+    ├── X_val.pkl
+    ├── y_test.pkl
+    ├── y_training.pkl
+    └── y_val.pkl
 ```
 ### Training 
 1. Change the data path in the `training.py`
 ```
    # Training Google_Home dataset
-   dataset_dir = "/the/path/to/pickle_data/Google_Home/Captures_5m/"
+   dataset_dir = "/the/path/to/pickle_data/Google_Home/"
 ```
 2. Run `python training.py`
