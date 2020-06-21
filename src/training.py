@@ -55,7 +55,7 @@ def training(dataset_dir, save_path, lr, epoch, batch_size, input_length, nb_cla
     y_val = np_utils.to_categorical(y_val, nb_classes)
     y_test = np_utils.to_categorical(y_test, nb_classes)
 
-    print("Preparing Data for training")
+    print("Preparing data for training")
     # initialize the optimizer and model
     print(time.sleep(2))
     # Building and training model

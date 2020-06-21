@@ -66,7 +66,7 @@ def load_data(dataset_dir):
     with open(os.path.join(dataset_dir, 'y_val.pkl'), 'rb') as handle:
         y_val = np.array(pickle.load(handle))
 
-    print("Data dimensions:")
+    print("data dimensions:")
     print("X: Training data's shape : ", X_train.shape)
     print("y: Training data's shape : ", y_train.shape)
 
